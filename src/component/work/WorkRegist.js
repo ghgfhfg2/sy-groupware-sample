@@ -216,6 +216,15 @@ function WorkRegist({ selectWorkInfo, closeRender }) {
   const [typeRadio, setTypeRadio] = useState();
 
   const submitWork = (values) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     if (!cateUid3) {
       toast({
         description: "하위 카테고리가 지정되지 않았습니다.",

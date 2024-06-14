@@ -70,6 +70,12 @@ function Login() {
         });
     });
   }
+  const joinGuest = () => {
+    onSubmit({
+      email: "guest@guest.com",
+      password: "guest1234",
+    });
+  };
   return (
     <>
       {alertState && <AlertBox text={alertMessage} />}
@@ -135,6 +141,14 @@ function Login() {
                 type="submit"
               >
                 로그인
+              </Button>
+              <Button
+                onClick={joinGuest}
+                mb={2}
+                width="100%"
+                isLoading={isSubmitting}
+              >
+                손님으로 입장
               </Button>
               <Link href="/join">
                 <a style={{ alignSelf: "flex-end" }}>회원가입</a>

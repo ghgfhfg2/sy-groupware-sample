@@ -78,6 +78,15 @@ export default function TypeBoard() {
     setEditorState(value);
   };
   const onSubmit = (values) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     let editCon = initTypeCon?.editor || editorState;
     return new Promise((resolve) => {
       let uid = router.query.id || shortid.generate();

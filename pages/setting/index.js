@@ -215,6 +215,7 @@ export default function Setting() {
   useGetUser();
   const dispatch = useDispatch();
   const userAll = useSelector((state) => state.user.allUser);
+  const userInfo = useSelector((state) => state.user.currentUser);
   const router = useRouter();
   const [isAdminPop, setIsAdminPop] = useState(false);
   const [isManagerPop, setIsManagerPop] = useState(false);
@@ -277,6 +278,15 @@ export default function Setting() {
   }, [userAll]);
 
   const onSelectAdmin = (checkedItems) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     const newUserAll = userAll.map((el) => {
       let userRef = ref(db, `user/${el.uid}`);
       if (checkedItems.includes(el.uid)) {
@@ -312,6 +322,15 @@ export default function Setting() {
     setIsManagerPop(false);
   };
   const onSelectManager = (checkedItems) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     const newUserAll = userAll.map((el) => {
       let userRef = ref(db, `user/${el.uid}`);
       if (checkedItems.includes(el.uid)) {
@@ -428,6 +447,15 @@ export default function Setting() {
   const [logoName, setLogoName] = useState();
 
   const logoCheck = async () => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     const file = getValues("logo")[0];
     const thumbnail = await imageResize(file, 50);
     const limit = 2097152;
@@ -468,6 +496,15 @@ export default function Setting() {
   };
 
   const removeLogo = () => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     setLogoThumb("");
     deleteObject(logoRef)
       .then(() => {
@@ -482,6 +519,15 @@ export default function Setting() {
   };
 
   const onSubmit = (values) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     let newValues;
     return new Promise((resolve) => {
       if (values.logo[0]) {

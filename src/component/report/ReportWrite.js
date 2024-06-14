@@ -62,6 +62,15 @@ function ReportWrite() {
   };
 
   const onSubmit = async (values) => {
+    if (userInfo?.authority == "guest") {
+      toast({
+        description: "권한이 없습니다.",
+        status: "error",
+        duration: 1000,
+        isClosable: false,
+      });
+      return;
+    }
     values = {
       ...values,
       manager: userInfo.manager_uid,
