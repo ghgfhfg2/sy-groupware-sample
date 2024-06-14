@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "board": {
+      "list": {
+        ".indexOn": ["writer_uid", "dateMonth"]
+      }
+    },
+    "dayoff": {
+      "list": {
+        ".indexOn": ["uid"]
+      }
+    },
+    "regular": {
+      "list": {
+        ".indexOn": ["lastPayment"]
+      }
+    },
+    ".read": "true",
+    ".write": "auth!=null"
+  }
+}
