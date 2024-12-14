@@ -385,7 +385,6 @@ function Schedule({ main }) {
           listObj[date] = listObj[date] ? [...listObj[date], value] : [value];
         }
       });
-      console.log("listObj", listObj);
       setDayoffList(listObj);
     });
     return () => {

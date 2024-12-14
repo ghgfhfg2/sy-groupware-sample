@@ -16,6 +16,7 @@ import { IoMdTimer } from "react-icons/io";
 import { stateText } from "@component/work/WorkView";
 import Refresh from "@component/Refresh";
 import NameComponent from "../NameComponent";
+import { useGetProjectList } from "src/api/project";
 
 export const WorkBoardList = styled(BoardLi)`
   li {
@@ -103,9 +104,10 @@ export default function WorkList({ main }) {
         limit,
         state,
         project,
-        depth: userInfo.project_depth || "",
+        depth: userInfo.project_depth || null,
       })
       .then((res) => {
+        console.log("res", res);
         const total = res.data.total;
         setTotalPage(total);
         const list = res.data.list?.map((el) => {
@@ -130,52 +132,12 @@ export default function WorkList({ main }) {
       });
   };
 
-  const [projectList, setProjectList] = useState();
-  useEffect(() => {
-    axios
-      .post(process.env.NEXT_PUBLIC_API_URL + "/groupware.php", {
-        a: "get_project_list",
-      })
-      .then((res) => {
-        setProjectList(res.data.project);
-      });
-  }, []);
+  const { data: projectList } = useGetProjectList();
 
   const [render, setRender] = useState(false);
   const reRender = () => {
     setRender(!render);
   };
-
-  // const refreshTime = 100;
-  // const [refreshTimer, setRefreshTimer] = useState(refreshTime);
-  // const rerender = () => {
-  //   setRender(!render);
-  //   setRefreshTimer(refreshTime);
-  //   toast({
-  //     description: "새로고침 되었습니다.",
-  //     status: "success",
-  //     duration: 1000,
-  //     isClosable: false,
-  //   });
-  // };
-
-  // //자동 새로고침
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setRefreshTimer((time) => {
-  //       return time - 1;
-  //     });
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  // }, []);
-  // useEffect(() => {
-  //   if (refreshTimer < 1) {
-  //     setRefreshTimer(refreshTime);
-  //     rerender();
-  //   } else {
-  //     return;
-  //   }
-  // }, [refreshTimer]);
 
   //상태 필터
   const [curState, setCurState] = useState("ndone");
@@ -188,12 +150,11 @@ export default function WorkList({ main }) {
   const [curProject, setCurProject] = useState();
   const onFilterProject = (e) => {
     setCurProject(e.target.value);
-    getWorkList(1, "", e.target.value);
   };
 
   useEffect(() => {
     getWorkList(curPage, curState, curProject);
-  }, [userAll, curPage, userInfo, render]);
+  }, [curPage, render, curProject]);
 
   return (
     <>

@@ -17,6 +17,8 @@ import {
 } from "firebase/database";
 
 export const onSendAlert = (userList, type) => {
+  console.log(userList);
+  return;
   userList.forEach((el) => {
     runTransaction(ref(db, `user/${el}/alert/${type}`), (pre) => {
       return Number(pre) + 1;

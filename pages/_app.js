@@ -32,6 +32,7 @@ import PaymentAlertPop from "@component/ragular/PaymentAlertPop";
 import AlertPop from "@component/popup/AlertPop";
 import axios from "axios";
 import { updateNonRead } from "@redux/actions/counter_action";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const BtnRegular = styled.button`
   position: fixed;
@@ -58,6 +59,7 @@ const BtnRegular = styled.button`
 `;
 
 function App({ Component, pageProps }) {
+  const queryClient = new QueryClient();
   const storage = getStorage();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -218,45 +220,51 @@ function App({ Component, pageProps }) {
 
   return (
     <>
-      <ChakraProvider>
-        {isLoading ? (
-          <>
-            <Flex minHeight="100vh" justifyContent="center" alignItems="center">
-              <Loading size={`xl`} />
-            </Flex>
-          </>
-        ) : (
-          <>
-            {authCheck ? (
-              <>
-                {regularList && regularList.length > 0 && (
-                  <BtnRegular onClick={onPaymentPop}>
-                    <AiOutlineAlert />
-                  </BtnRegular>
-                )}
-                {isPaymentPop && (
-                  <PaymentAlertPop
-                    regularList={regularList}
-                    closePop={closePaymentPop}
-                  />
-                )}
-                {getLayout(<Component {...pageProps} />)}
-              </>
-            ) : (
-              <>
-                {isPublicPath ? (
-                  getLayout(<Component {...pageProps} />)
-                ) : (
-                  <Login />
-                )}
-              </>
-            )}
-          </>
-        )}
-        {isAlertPop && (
-          <AlertPop alertState={alertState} closeAlertPop={closeAlertPop} />
-        )}
-      </ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
+          {isLoading ? (
+            <>
+              <Flex
+                minHeight="100vh"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Loading size={`xl`} />
+              </Flex>
+            </>
+          ) : (
+            <>
+              {authCheck ? (
+                <>
+                  {regularList && regularList.length > 0 && (
+                    <BtnRegular onClick={onPaymentPop}>
+                      <AiOutlineAlert />
+                    </BtnRegular>
+                  )}
+                  {isPaymentPop && (
+                    <PaymentAlertPop
+                      regularList={regularList}
+                      closePop={closePaymentPop}
+                    />
+                  )}
+                  {getLayout(<Component {...pageProps} />)}
+                </>
+              ) : (
+                <>
+                  {isPublicPath ? (
+                    getLayout(<Component {...pageProps} />)
+                  ) : (
+                    <Login />
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {isAlertPop && (
+            <AlertPop alertState={alertState} closeAlertPop={closeAlertPop} />
+          )}
+        </ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }

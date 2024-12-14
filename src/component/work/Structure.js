@@ -426,7 +426,6 @@ export default function Structure() {
               <span className="wid_2" style={{ textAlign: "center" }}>
                 담당자
                 <br />
-                (에딧)
               </span>
               <span className="wid_2" style={{ textAlign: "center" }}>
                 담당자

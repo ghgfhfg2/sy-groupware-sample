@@ -232,6 +232,8 @@ function Header({ logoImg }) {
     }
   };
 
+  console.log("userInfo", userInfo);
+
   return (
     <>
       <HeaderTop>
@@ -270,14 +272,15 @@ function Header({ logoImg }) {
               </li>
             ) : (
               <>
-                {(userInfo && userInfo.authority?.includes("admin")) ||
-                  (userInfo.authority?.includes("guest") && (
+                {userInfo &&
+                  userInfo.authority &&
+                  ["admin", "guest"].includes(userInfo.authority) && (
                     <li
                       className={router.route.indexOf("/setting") > -1 && "on"}
                     >
                       <Link href="/setting">설정</Link>
                     </li>
-                  ))}
+                  )}
                 <li className={router.route.indexOf("/insa") > -1 && "on"}>
                   <Link href="/insa">인사관리</Link>
                 </li>

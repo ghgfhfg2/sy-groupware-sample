@@ -106,9 +106,9 @@ export default function UserDayoffPop({ userData, closeDayoffPop, onRender }) {
     let newUserData = { ...userData };
 
     if (values.modiType === "1") {
-      newUserData.dayoff = Number(newUserData.dayoff) + Number(values.day);
+      newUserData.dayoff = Number(newUserData.dayoff || 0) + Number(values.day);
     } else {
-      newUserData.dayoff = Number(newUserData.dayoff) - Number(values.day);
+      newUserData.dayoff = Number(newUserData.dayoff || 0) - Number(values.day);
     }
     if (newUserData.dayoff < 0) {
       toast({
